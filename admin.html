@@ -1,68 +1,24 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-  <meta charset="UTF-8">
-  <title>অ্যাডমিন প্যানেল</title>
+<meta charset="UTF-8">
+<title>Admin Panel</title>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"></script>
+<style>
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f0f0f0; }
+    .question { background: #fff; padding: 10px; margin: 8px 0; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    input { width: 80%; padding: 6px; margin: 6px 0; border-radius: 6px; border: 1px solid #ccc; }
+    button { padding: 6px 12px; background: #198754; color: #fff; border: none; border-radius: 6px; cursor: pointer; }
+</style>
 </head>
 <body>
-  <h2>প্রশ্ন ও উত্তর</h2>
-  <div id="questions"></div>
 
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"></script>
-
-  <script>
-    // ✅ Firebase Config
-    const firebaseConfig = {
-      apiKey: "AIzaSyDZU9TtNXcpWW_jp366Kf2eWaN8QjigVeU",
-      authDomain: "islamicworldskm.firebaseapp.com",
-      projectId: "islamicworldskm",
-      storageBucket: "islamicworldskm.firebasestorage.app",
-      messagingSenderId: "703538391992",
-      appId: "1:703538391992:web:9a36ea8c6f190fb3be3d4d"
-    };
-
-    // ✅ Initialize Firebase
-    const app = firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-
-    // ✅ প্রশ্ন লোড করা
-    const questionsDiv = document.getElementById("questions");
-
-    db.collection("questions").orderBy("time", "desc").onSnapshot(snapshot => {
-      questionsDiv.innerHTML = "";
-      snapshot.forEach(doc => {
-        const data = doc.data();
-        questionsDiv.innerHTML += `
-          <div style="border:1px solid gray; padding:10px; margin:10px;">
-            <p><b>${data.name}</b>: ${data.question}</p>
-            <p><b>উত্তর:</b> ${data.answer || "এখনো উত্তর দেওয়া হয়নি"}</p>
-            <textarea id="answer-${doc.id}" placeholder="উত্তর লিখুন...">${data.answer}</textarea>
-            <button onclick="saveAnswer('${doc.id}')">সেভ করুন</button>
-          </div>
-        `;
-      });
-    });
-
-    // ✅ উত্তর সেভ করা
-    async function saveAnswer(id) {
-      const answerText = document.getElementById("answer-" + id).value;
-      await db.collection("questions").doc(id).update({
-        answer: answerText
-      });
-      alert("উত্তর সংরক্ষণ হয়েছে!");
-    }
-  </script>
-<!-- Firebase App (core SDK) -->
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
-<!-- Firestore SDK -->
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"></script>
-<!-- Authentication SDK (যদি দরকার হয়) -->
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"></script>
+<h2>Admin Panel – প্রশ্নের উত্তর দিন</h2>
+<div id="questionsList"></div>
 
 <script>
-  // 🔹 Firebase Config (আপনার দেওয়া কনফিগ)
+  // Firebase config
   const firebaseConfig = {
     apiKey: "AIzaSyDZU9TtNXcpWW_jp366Kf2eWaN8QjigVeU",
     authDomain: "islamicworldskm.firebaseapp.com",
@@ -72,65 +28,36 @@
     appId: "1:703538391992:web:9a36ea8c6f190fb3be3d4d"
   };
 
-  // 🔹 Firebase Initialize
+  // Initialize Firebase
   const app = firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
 
-  // 🔹 যদি QA পেজ হয় (প্রশ্ন করার সিস্টেম)
-  if (document.getElementById("qaForm")) {
-    const form = document.getElementById("qaForm");
+  const questionsRef = db.collection("questions");
 
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const question = document.getElementById("question").value;
-
-      try {
-        await db.collection("questions").add({
-          question: question,
-          answer: "",
-          createdAt: new Date()
-        });
-        alert("আপনার প্রশ্ন জমা হয়েছে!");
-        form.reset();
-      } catch (error) {
-        console.error("Error adding question: ", error);
-      }
+  // সব প্রশ্ন দেখানো
+  questionsRef.orderBy("timestamp","desc").onSnapshot(snapshot => {
+    const list = document.getElementById("questionsList");
+    list.innerHTML = "";
+    snapshot.forEach(doc => {
+      const data = doc.data();
+      const div = document.createElement("div");
+      div.className = "question";
+      div.innerHTML = `<b>${data.name}</b>: ${data.questionText}<br>
+        <input type="text" placeholder="উত্তর লিখুন" id="answer-${doc.id}" value="${data.answer || ''}">
+        <button onclick="submitAnswer('${doc.id}')">উত্তর সংরক্ষণ করুন</button>`;
+      list.appendChild(div);
     });
-  }
+  });
 
-  // 🔹 যদি Admin পেজ হয় (প্রশ্ন দেখানো ও উত্তর দেওয়া সিস্টেম)
-  if (document.getElementById("questionsList")) {
-    const questionsList = document.getElementById("questionsList");
-
-    async function loadQuestions() {
-      const snapshot = await db.collection("questions").orderBy("createdAt", "desc").get();
-      questionsList.innerHTML = "";
-
-      snapshot.forEach(doc => {
-        const data = doc.data();
-        const div = document.createElement("div");
-        div.innerHTML = `
-          <p><b>প্রশ্ন:</b> ${data.question}</p>
-          <p><b>উত্তর:</b> ${data.answer || "এখনও উত্তর দেওয়া হয়নি"}</p>
-          <textarea id="answer-${doc.id}" placeholder="উত্তর লিখুন..."></textarea>
-          <button onclick="saveAnswer('${doc.id}')">সেভ</button>
-          <hr>
-        `;
-        questionsList.appendChild(div);
-      });
-    }
-
-    window.saveAnswer = async function(id) {
-      const answer = document.getElementById("answer-" + id).value;
-      await db.collection("questions").doc(id).update({
-        answer: answer
-      });
-      alert("উত্তর সেভ হয়েছে!");
-      loadQuestions();
-    };
-
-    loadQuestions();
+  // উত্তর সংরক্ষণ করা
+  function submitAnswer(docId) {
+    const answerText = document.getElementById(`answer-${docId}`).value.trim();
+    if(!answerText) { alert("উত্তর লিখুন!"); return; }
+    questionsRef.doc(docId).update({ answer: answerText })
+      .then(() => alert("উত্তর সফলভাবে সংরক্ষিত হয়েছে!"))
+      .catch(err => console.error(err));
   }
 </script>
+
 </body>
 </html>
