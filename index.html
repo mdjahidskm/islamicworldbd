@@ -1,59 +1,128 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Islamic World BD</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <title>IslamicWorldBD Team Portal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Font Awesome CDN for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f5f6fa;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background: #198754;
+            color: #fff;
+            padding: 30px 0 10px 0;
+            text-align: center;
+        }
+        nav {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            background: #fff;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+        }
+        nav a {
+            color: #198754;
+            text-decoration: none;
+            padding: 18px 25px;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            transition: background 0.2s, color 0.2s;
+            border-radius: 8px;
+            margin: 8px;
+        }
+        nav a i {
+            margin-right: 8px;
+            font-size: 22px;
+        }
+        nav a:hover {
+            background: #198754;
+            color: #fff;
+        }
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 18px;
+            margin: 32px 0;
+        }
+        .gallery img {
+            width: 220px;
+            height: 140px;
+            object-fit: cover;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.09);
+            border: 1px solid #e2e2e2;
+        }
+        .about, .contact {
+            max-width: 640px;
+            margin: 32px auto;
+            background: #fff;
+            border-radius: 14px;
+            padding: 30px;
+            box-shadow: 0 3px 16px rgba(0,0,0,0.10);
+        }
+        .about h2, .contact h2 {
+            color: #198754;
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <h1>Islamic World BD</h1>
-    <p>Nasheed • Motivational • Tafsir • Blogs • Ringtones</p>
-  </header>
-  <nav>
+    <header>
+        <h1><i class="fas fa-moon"></i> IslamicWorldBD Team Portal</h1>
+        <p>ইসলামিক মাল্টিমিডিয়া ও শিক্ষার জগতে স্বাগতম!</p>
+    </header>
     <nav>
-  <a href="videos.html"><i class="fas fa-play-circle"></i> ভিডিও</a>
-  <a href="tafsir.html"><i class="fas fa-book-quran"></i> তাফসীর</a>
-  <a href="blog.html"><i class="fas fa-pen-nib"></i> ব্লগ</a>
-  <a href="gallery.html"><i class="fas fa-images"></i> ছবি</a>
-  <a href="ringtones.html"><i class="fas fa-music"></i> রিংটোন</a>
-  <a href="contact.html"><i class="fas fa-envelope"></i> যোগাযোগ</a>
-    <a href="videos.html">ইসলামিক ভিডিও</a>
-    <a href="nasheed.html">ইসলামিক নাশিদ</a>
-    <a href="hadith.html">হাদিস</a>
-    <a href="tafsir.html">তাফসীর</a>
-    <a href="blog.html">ব্লগ</a>
-    <a href="gallery.html">ছবি</a>
-    <a href="ringtones.html">ইসলামিক রিংটোন</a>
-    <a href="contact.html">যোগাযোগ</a>
-  </nav>
-  <div class="container">
-    <div class="hero">
-      <h2>স্বাগতম — Islamic World BD</h2>
-      <p>এখানে পাবেন ইসলামিক ভিডিও, হাদিস, তাফসীর, ইসলামি নাশিদ, ব্লগ, ছবি, ইসলামিক রিংটোন ও যোগাযোগের সহজ ব্যবস্থা।</p>
-      <div class="images-row">
-  <img src="images/mosque1.jpg" alt="Mosque">
-  <img src="images/quran1.jpg" alt="Quran">
-  <img src="images/minar1.jpg" alt="Minar">
-</div>
-    </div>
-    div>
-    <section class="card">
-      <h3>আমাদের সেবা</h3>
-      <ul>
-        <li>ইসলামিক ভিডিও ও নাশিদ</li>
-        <li>কোরআনের তাফসীর</li>
-        <li>ইসলামিক ব্লগ ও আর্টিকেল</li>
-        <li>ছবি গ্যালারি</li>
-        <li>ইসলামিক রিংটোন</li>
-        <li>যোগাযোগ ফর্ম</li>
-      </ul>
+        <a href="#"><i class="fas fa-music"></i> ইসলামিক নাশিদ</a>
+        <a href="#"><i class="fas fa-book-quran"></i> তাফসির আল কুরআন</a>
+        <a href="#"><i class="fas fa-book"></i> আল হাদিস</a>
+        <a href="#"><i class="fas fa-play-circle"></i> ইসলামিক ভিডিও</a>
+        <a href="#"><i class="fas fa-volume-up"></i> ইসলামিক রিংটোন</a>
+        <a href="#"><i class="fas fa-image"></i> ইসলামিক ইমেজ</a>
+        <a href="#"><i class="fas fa-images"></i> ইসলামিক ওয়ালপেপার</a>
+        <a href="#about"><i class="fas fa-users"></i> এবাউট</a>
+        <a href="#contact"><i class="fas fa-envelope"></i> যোগাযোগ</a>
+    </nav>
+
+    <section class="gallery">
+        <!-- Demo Islamic Images (replace with your own links if needed) -->
+        <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=500&q=80" alt="Islamic Image 1">
+        <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=500&q=80" alt="Islamic Image 2">
+        <img src="https://images.unsplash.com/photo-1505685296765-3a2736de412f?auto=format&fit=crop&w=500&q=80" alt="Islamic Image 3">
+        <img src="https://images.unsplash.com/photo-1447958374760-1ce70cf11ee3?auto=format&fit=crop&w=500&q=80" alt="Islamic Image 4">
     </section>
-  </div>
-  <footer>
-    © <span id="yr"></span> Islamic World BD — All rights reserved.
-  </footer>
-  <script>document.getElementById('yr').textContent=new Date().getFullYear();</script>
+
+    <section class="about" id="about">
+        <h2><i class="fas fa-users"></i> আমাদের সম্পর্কে</h2>
+        <p>
+            IslamicWorldBD টিমের লক্ষ্য - সঠিক ইসলামিক মাল্টিমিডিয়া এবং শিক্ষার তথ্য সকলের কাছে পৌঁছে দেয়া।
+            এখানে পাবেন নাশিদ, তাফসির, কুরআন, হাদিস, ভিডিও, রিংটোন, ইসলামিক ছবি ও ওয়ালপেপার।
+            আমাদের টিম সর্বদা চেষ্টা করে যাচ্ছি সঠিক তথ্য ও আধুনিক প্রযুক্তি ব্যবহার করে ইসলাম প্রচারে।
+        </p>
+    </section>
+
+    <section class="contact" id="contact">
+        <h2><i class="fas fa-envelope"></i> যোগাযোগ করুন</h2>
+        <p>
+            আপনার মতামত, প্রশ্ন, বা সহযোগিতার জন্য নিচের ইমেইল/ফর্মে যোগাযোগ করুন:<br>
+            <b>ইমেইল:</b> contact@islamicworldbd.com<br>
+            <b>ফোন:</b> +880-1XXXXXXXXX
+        </p>
+        <!-- Simple contact form (demo purpose) -->
+        <form>
+            <input type="text" placeholder="আপনার নাম" style="width:48%;padding:8px;margin-bottom:9px;">
+            <input type="email" placeholder="ইমেইল" style="width:48%;padding:8px;margin-bottom:9px;">
+            <br>
+            <textarea placeholder="বার্তা লিখুন" style="width:98%;padding:10px;height:60px;"></textarea>
+            <br>
+            <button type="submit" style="padding:10px 25px; background:#198754;color:#fff;border:none;border-radius:8px; cursor:pointer;">পাঠান</button>
+        </form>
+    </section>
 </body>
 </html>
