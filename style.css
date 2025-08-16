@@ -100,3 +100,15 @@ form[name="loginForm"] button:hover {
     padding-left: 35px; /* আইকনের জন্য স্পেস */
     width: 100%;
 }
+.ask-question {
+    max-width: 700px;
+    margin: 30px auto;
+    background: #f0f8ff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.ask-question h2 {
+    text-align: center;
+    color: #198754;
+}
