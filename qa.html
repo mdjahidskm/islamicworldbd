@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Q&A Page</title>
+</head>
+<body>
+  <h2>প্রশ্নোত্তর</h2>
+  <div id="qa"></div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+      databaseURL: "https://YOUR_PROJECT_ID.firebaseio.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT_ID.appspot.com",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    const qaDiv = document.getElementById('qa');
+
+    db.ref('questions').on('value', (snapshot) => {
+      qaDiv.innerHTML = "";
+      snapshot.forEach((child) => {
+        const data = child.val();
+
+        if (data.answer && data.answer.trim() !== "") {
+          let div = document.createElement("div");
+          div.innerHTML = `
+            <p><b>প্রশ্ন:</b> ${data.question}</p>
+            <p><b>উত্তর:</b> ${data.answer}</p>
+            <hr>
+          `;
+          qaDiv.appendChild(div);
+        }
+      });
+    });
+  </script>
+</body>
+</html>
