@@ -1,62 +1,30 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-  <meta charset="UTF-8">
-  <title>প্রশ্ন করুন</title>
+<meta charset="UTF-8">
+<title>প্রশ্নোত্তর</title>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"></script>
+<style>
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f9f9f9; }
+    input, textarea { width: 100%; padding: 8px; margin: 6px 0; border-radius: 6px; border: 1px solid #ccc; }
+    button { padding: 8px 20px; background: #198754; color: #fff; border: none; border-radius: 6px; cursor: pointer; }
+    .question { background: #fff; padding: 10px; margin: 8px 0; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .answer { color: green; font-weight: bold; margin-top: 5px; }
+</style>
 </head>
 <body>
-  <h2>আপনার প্রশ্ন লিখুন</h2>
-  <form id="questionForm">
-    <input type="text" id="name" placeholder="আপনার নাম" required><br><br>
-    <textarea id="question" placeholder="প্রশ্ন লিখুন" required></textarea><br><br>
-    <button type="submit">জমা দিন</button>
-  </form>
 
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"></script>
+<h2>প্রশ্ন করুন</h2>
+<input type="text" id="userName" placeholder="আপনার নাম">
+<textarea id="userQuestion" placeholder="আপনার প্রশ্ন লিখুন"></textarea>
+<button onclick="submitQuestion()">জমা দিন</button>
 
-  <script>
-    // ✅ Firebase Config
-    const firebaseConfig = {
-      apiKey: "AIzaSyDZU9TtNXcpWW_jp366Kf2eWaN8QjigVeU",
-      authDomain: "islamicworldskm.firebaseapp.com",
-      projectId: "islamicworldskm",
-      storageBucket: "islamicworldskm.firebasestorage.app",
-      messagingSenderId: "703538391992",
-      appId: "1:703538391992:web:9a36ea8c6f190fb3be3d4d"
-    };
-
-    // ✅ Initialize Firebase
-    const app = firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-
-    // ✅ প্রশ্ন জমা দেওয়া
-    document.getElementById("questionForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const name = document.getElementById("name").value;
-      const question = document.getElementById("question").value;
-
-      await db.collection("questions").add({
-        name: name,
-        question: question,
-        answer: "",
-        time: new Date()
-      });
-
-      alert("আপনার প্রশ্ন জমা হয়েছে!");
-      document.getElementById("questionForm").reset();
-    });
-  </script>
-<!-- Firebase App (core SDK) -->
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
-<!-- Firestore SDK -->
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"></script>
-<!-- Authentication SDK (যদি দরকার হয়) -->
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"></script>
+<h2>প্রশ্ন ও উত্তর</h2>
+<div id="questionsList"></div>
 
 <script>
-  // 🔹 Firebase Config (আপনার দেওয়া কনফিগ)
+  // Firebase config
   const firebaseConfig = {
     apiKey: "AIzaSyDZU9TtNXcpWW_jp366Kf2eWaN8QjigVeU",
     authDomain: "islamicworldskm.firebaseapp.com",
@@ -66,65 +34,44 @@
     appId: "1:703538391992:web:9a36ea8c6f190fb3be3d4d"
   };
 
-  // 🔹 Firebase Initialize
+  // Initialize Firebase
   const app = firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
 
-  // 🔹 যদি QA পেজ হয় (প্রশ্ন করার সিস্টেম)
-  if (document.getElementById("qaForm")) {
-    const form = document.getElementById("qaForm");
+  const questionsRef = db.collection("questions");
 
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const question = document.getElementById("question").value;
+  // প্রশ্ন জমা দেওয়া
+  function submitQuestion() {
+    const name = document.getElementById("userName").value.trim();
+    const question = document.getElementById("userQuestion").value.trim();
 
-      try {
-        await db.collection("questions").add({
-          question: question,
-          answer: "",
-          createdAt: new Date()
-        });
-        alert("আপনার প্রশ্ন জমা হয়েছে!");
-        form.reset();
-      } catch (error) {
-        console.error("Error adding question: ", error);
-      }
+    if(!name || !question) { alert("সব ঘর পূরণ করুন!"); return; }
+
+    questionsRef.add({
+      name: name,
+      questionText: question,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    }).then(() => {
+      alert("আপনার প্রশ্ন সফলভাবে জমা হয়েছে!");
+      document.getElementById("userName").value = "";
+      document.getElementById("userQuestion").value = "";
     });
   }
 
-  // 🔹 যদি Admin পেজ হয় (প্রশ্ন দেখানো ও উত্তর দেওয়া সিস্টেম)
-  if (document.getElementById("questionsList")) {
-    const questionsList = document.getElementById("questionsList");
-
-    async function loadQuestions() {
-      const snapshot = await db.collection("questions").orderBy("createdAt", "desc").get();
-      questionsList.innerHTML = "";
-
-      snapshot.forEach(doc => {
-        const data = doc.data();
-        const div = document.createElement("div");
-        div.innerHTML = `
-          <p><b>প্রশ্ন:</b> ${data.question}</p>
-          <p><b>উত্তর:</b> ${data.answer || "এখনও উত্তর দেওয়া হয়নি"}</p>
-          <textarea id="answer-${doc.id}" placeholder="উত্তর লিখুন..."></textarea>
-          <button onclick="saveAnswer('${doc.id}')">সেভ</button>
-          <hr>
-        `;
-        questionsList.appendChild(div);
-      });
-    }
-
-    window.saveAnswer = async function(id) {
-      const answer = document.getElementById("answer-" + id).value;
-      await db.collection("questions").doc(id).update({
-        answer: answer
-      });
-      alert("উত্তর সেভ হয়েছে!");
-      loadQuestions();
-    };
-
-    loadQuestions();
-  }
+  // সব প্রশ্ন দেখানো (Live updates)
+  questionsRef.orderBy("timestamp","desc").onSnapshot(snapshot => {
+    const list = document.getElementById("questionsList");
+    list.innerHTML = "";
+    snapshot.forEach(doc => {
+      const data = doc.data();
+      const div = document.createElement("div");
+      div.className = "question";
+      div.innerHTML = `<b>${data.name}</b>: ${data.questionText}<br>
+                       <span class="answer">${data.answer ? "উত্তর: "+data.answer : "উত্তর এখনও দেওয়া হয়নি"}</span>`;
+      list.appendChild(div);
+    });
+  });
 </script>
+
 </body>
 </html>
