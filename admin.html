@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel - Answer Questions</title>
+</head>
+<body>
+  <h2>Admin Panel</h2>
+  <div id="questions"></div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+      databaseURL: "https://YOUR_PROJECT_ID.firebaseio.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT_ID.appspot.com",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    const questionsDiv = document.getElementById('questions');
+
+    // সব প্রশ্ন দেখাও
+    db.ref('questions').on('value', (snapshot) => {
+      questionsDiv.innerHTML = "";
+      snapshot.forEach((child) => {
+        const data = child.val();
+        const id = child.key;
+
+        let div = document.createElement("div");
+        div.innerHTML = `
+          <p><b>${data.name}</b>: ${data.question}</p>
+          <input type="text" id="answer-${id}" placeholder="Write answer..." value="${data.answer || ''}" />
+          <button onclick="saveAnswer('${id}')">Save Answer</button>
+          <hr>
+        `;
+        questionsDiv.appendChild(div);
+      });
+    });
+
+    // উত্তর সেভ করো
+    function saveAnswer(id) {
+      const answer = document.getElementById(`answer-${id}`).value;
+      db.ref('questions/' + id).update({
+        answer: answer
+      });
+      alert("Answer Saved!");
+    }
+  </script>
+</body>
+</html>
