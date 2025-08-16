@@ -54,5 +54,83 @@
       alert("উত্তর সংরক্ষণ হয়েছে!");
     }
   </script>
+<!-- Firebase App (core SDK) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
+<!-- Firestore SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"></script>
+<!-- Authentication SDK (যদি দরকার হয়) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"></script>
+
+<script>
+  // 🔹 Firebase Config (আপনার দেওয়া কনফিগ)
+  const firebaseConfig = {
+    apiKey: "AIzaSyDZU9TtNXcpWW_jp366Kf2eWaN8QjigVeU",
+    authDomain: "islamicworldskm.firebaseapp.com",
+    projectId: "islamicworldskm",
+    storageBucket: "islamicworldskm.firebasestorage.app",
+    messagingSenderId: "703538391992",
+    appId: "1:703538391992:web:9a36ea8c6f190fb3be3d4d"
+  };
+
+  // 🔹 Firebase Initialize
+  const app = firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  // 🔹 যদি QA পেজ হয় (প্রশ্ন করার সিস্টেম)
+  if (document.getElementById("qaForm")) {
+    const form = document.getElementById("qaForm");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const question = document.getElementById("question").value;
+
+      try {
+        await db.collection("questions").add({
+          question: question,
+          answer: "",
+          createdAt: new Date()
+        });
+        alert("আপনার প্রশ্ন জমা হয়েছে!");
+        form.reset();
+      } catch (error) {
+        console.error("Error adding question: ", error);
+      }
+    });
+  }
+
+  // 🔹 যদি Admin পেজ হয় (প্রশ্ন দেখানো ও উত্তর দেওয়া সিস্টেম)
+  if (document.getElementById("questionsList")) {
+    const questionsList = document.getElementById("questionsList");
+
+    async function loadQuestions() {
+      const snapshot = await db.collection("questions").orderBy("createdAt", "desc").get();
+      questionsList.innerHTML = "";
+
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const div = document.createElement("div");
+        div.innerHTML = `
+          <p><b>প্রশ্ন:</b> ${data.question}</p>
+          <p><b>উত্তর:</b> ${data.answer || "এখনও উত্তর দেওয়া হয়নি"}</p>
+          <textarea id="answer-${doc.id}" placeholder="উত্তর লিখুন..."></textarea>
+          <button onclick="saveAnswer('${doc.id}')">সেভ</button>
+          <hr>
+        `;
+        questionsList.appendChild(div);
+      });
+    }
+
+    window.saveAnswer = async function(id) {
+      const answer = document.getElementById("answer-" + id).value;
+      await db.collection("questions").doc(id).update({
+        answer: answer
+      });
+      alert("উত্তর সেভ হয়েছে!");
+      loadQuestions();
+    };
+
+    loadQuestions();
+  }
+</script>
 </body>
 </html>
