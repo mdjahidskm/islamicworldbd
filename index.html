@@ -45,11 +45,18 @@
     </div>
 
     <!-- Login Form -->
-    <form name="loginForm" onsubmit="return validateForm()">
+   <form name="loginForm" onsubmit="return validateForm()">
+    <div class="input-group">
+        <i class="fas fa-user"></i>
         <input type="text" name="username" placeholder="ইউজারনেম">
+    </div>
+    <div class="input-group">
+        <i class="fas fa-lock"></i>
         <input type="password" name="password" placeholder="পাসওয়ার্ড">
-        <button type="submit">লগইন</button>
-    </form>
+    </div>
+    <button type="submit"><i class="fas fa-sign-in-alt"></i> লগইন</button>
+</form>
+
 
     <!-- Navigation -->
     <nav>
