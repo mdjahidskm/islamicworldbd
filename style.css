@@ -66,3 +66,18 @@ form[name="loginForm"] input:focus {
     outline: none;
     box-shadow: 0 0 5px #198754;
 }
+form[name="loginForm"] button {
+    width: 98%;
+    padding: 10px;
+    margin-top: 8px;
+    background: #198754;
+    color: #fff;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+form[name="loginForm"] button:hover {
+    background: #146c43;
+}
