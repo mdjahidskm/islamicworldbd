@@ -81,3 +81,22 @@ form[name="loginForm"] button {
 form[name="loginForm"] button:hover {
     background: #146c43;
 }
+.input-group {
+    position: relative;
+    width: 45%;
+    display: inline-block;
+    margin: 5px 2%;
+}
+
+.input-group i {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    color: #198754;
+}
+
+.input-group input {
+    padding-left: 35px; /* আইকনের জন্য স্পেস */
+    width: 100%;
+}
