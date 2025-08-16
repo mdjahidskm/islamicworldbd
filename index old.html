@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <title>IslamicWorldBD Team Portal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <h1 id="title"><i class="fas fa-moon"></i> IslamicWorldBD Team Portal</h1>
+    <p id="time">ইসলামিক মাল্টিমিডিয়া ও শিক্ষার জগতে স্বাগতম!</p>
+</header>
+
+<main>
+    <h1 id="change">আমার ওয়েবসাইট</h1>
+    <img id="myImg" src="https://via.placeholder.com/150" alt="Demo Image">
+    <p id="hiddenText" style="display:none;">এটা আগে লুকানো ছিল!</p>
+    <p id="fadeText">এই টেক্সট ফেইড হবে।</p>
+    <div id="clock"></div>
+    <div id="date"></div>
+    <div id="quranAyah"></div>
+
+    <!-- Interactive Buttons -->
+    <div class="actions">
+        <button onclick="showMessage()">মেসেজ দেখাও</button>
+        <button onclick="askName()">ইউজারের নাম জিজ্ঞেস করো</button>
+        <button onclick="changeText()">টেক্সট পরিবর্তন</button>
+        <button onclick="changeImage()">ছবি পরিবর্তন</button>
+        <button onclick="showHidden()">লুকানো লেখা দেখাও</button>
+        <button onclick="fadeText()">ফেইড ইন/আউট</button>
+        <button onclick="changeColor()">শিরোনামের রং পরিবর্তন করুন</button>
+        <button onclick="showTime()">বর্তমান সময় দেখুন</button>
+    </div>
+
+    <!-- Image Slider -->
+    <div class="slider">
+        <img class="slide" src="https://via.placeholder.com/300x150?text=Slide1">
+        <img class="slide" src="https://via.placeholder.com/300x150?text=Slide2">
+        <img class="slide" src="https://via.placeholder.com/300x150?text=Slide3">
+    </div>
+
+    <!-- Login Form -->
+   <form name="loginForm" onsubmit="return validateForm()">
+    <div class="input-group">
+        <i class="fas fa-user"></i>
+        <input type="text" name="username" placeholder="ইউজারনেম">
+    </div>
+    <div class="input-group">
+        <i class="fas fa-lock"></i>
+        <input type="password" name="password" placeholder="পাসওয়ার্ড">
+    </div>
+    <button type="submit"><i class="fas fa-sign-in-alt"></i> লগইন</button>
+</form>
+
+
+    <!-- Navigation -->
+    <nav>
+        <a href="#"><i class="fas fa-music"></i> ইসলামিক নাশিদ</a>
+        <a href="#"><i class="fas fa-book-quran"></i> তাফসির আল কুরআন</a>
+        <a href="#"><i class="fas fa-book"></i> আল হাদিস</a>
+        <a href="#"><i class="fas fa-play-circle"></i> ইসলামিক ভিডিও</a>
+        <a href="#"><i class="fas fa-volume-up"></i> ইসলামিক রিংটোন</a>
+        <a href="#"><i class="fas fa-image"></i> ইসলামিক ইমেজ</a>
+        <a href="#"><i class="fas fa-images"></i> ইসলামিক ওয়ালপেপার</a>
+        <a href="#about"><i class="fas fa-users"></i> এবাউট</a>
+        <a href="#contact"><i class="fas fa-envelope"></i> যোগাযোগ</a>
+    </nav>
+
+    <!-- Gallery -->
+    <section class="gallery">
+        <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=500&q=80" alt="Islamic Image 1">
+        <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=500&q=80" alt="Islamic Image 2">
+        <img src="https://images.unsplash.com/photo-1505685296765-3a2736de412f?auto=format&fit=crop&w=500&q=80" alt="Islamic Image 3">
+        <img src="https://images.unsplash.com/photo-1447958374760-1ce70cf11ee3?auto=format&fit=crop&w=500&q=80" alt="Islamic Image 4">
+    </section>
+<section class="ask-question">
+  <h2>আপনার প্রশ্ন পাঠান</h2>
+  <iframe src="https://docs.google.com/forms/d/e/আপনার_ফর্ম_ID/viewform?embedded=true" width="640" height="800" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+</section>
+
+
+    <!-- About -->
+    <section class="about" id="about">
+        <h2><i class="fas fa-users"></i> আমাদের সম্পর্কে</h2>
+        <p>
+            IslamicWorldBD টিমের লক্ষ্য - সঠিক ইসলামিক মাল্টিমিডিয়া এবং শিক্ষার তথ্য সকলের কাছে পৌঁছে দেয়া।
+            এখানে পাবেন নাশিদ, তাফসির, কুরআন, হাদিস, ভিডিও, রিংটোন, ইসলামিক ছবি ও ওয়ালপেপার।
+            আমাদের টিম সর্বদা চেষ্টা করে যাচ্ছি সঠিক তথ্য ও আধুনিক প্রযুক্তি ব্যবহার করে ইসলাম প্রচারে।
+
+        </p>
+    </section>
+
+    <!-- Contact -->
+    <section class="contact" id="contact">
+        <h2><i class="fas fa-envelope"></i> যোগাযোগ করুন</h2>
+        <p>
+            আপনার মতামত, প্রশ্ন, বা সহযোগিতার জন্য নিচের ইমেইল/ফর্মে যোগাযোগ করুন:<br>
+            <b>ইমেইল:</b> contact@islamicworldbd.com<br>
+            <b>ফোন:</b> +880-1XXXXXXXXX
+        </p>
+        <form>
+            <input type="text" placeholder="আপনার নাম" style="width:48%;padding:8px;margin-bottom:9px;">
+            <input type="email" placeholder="ইমেইল" style="width:48%;padding:8px;margin-bottom:9px;">
+            <br>
+            <textarea placeholder="বার্তা লিখুন" style="width:98%;padding:10px;height:60px;"></textarea>
+            <br>
+            <button type="submit" style="padding:10px 25px; background:#198754;color:#fff;border:none;border-radius:8px; cursor:pointer;">পাঠান</button>
+        </form>
+    </section>
+
+</main>
+
+<!-- JS -->
+<script src="script.js"></script>
+</body>
+</html>
