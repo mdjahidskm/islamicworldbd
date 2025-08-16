@@ -49,3 +49,20 @@ nav a:hover { background: #198754; color: #fff; }
 .actions button:hover { background: #146c43; }
 
 .slide { display: none; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+/* Login Form Styling */
+form[name="loginForm"] input {
+    width: 45%;
+    padding: 10px;
+    margin: 5px 2%;
+    border: 2px solid #198754;
+    border-radius: 8px;
+    font-size: 16px;
+    color: #198754;
+    background-color: #e8f5e9; /* হালকা সবুজ ব্যাকগ্রাউন্ড */
+}
+
+form[name="loginForm"] input:focus {
+    border-color: #146c43;
+    outline: none;
+    box-shadow: 0 0 5px #198754;
+}
