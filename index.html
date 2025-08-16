@@ -97,6 +97,38 @@
         <h1 id="title"><i class="fas fa-moon"></i> IslamicWorldBD Team Portal</h1>
         <p id="time">ইসলামিক মাল্টিমিডিয়া ও শিক্ষার জগতে স্বাগতম!</p>
     </header>
+<body>
+  <h1 id="change">আমার ওয়েবসাইট</h1>
+  <button onclick="showMessage()">মেসেজ দেখাও</button>
+  <button onclick="askName()">ইউজারের নাম জিজ্ঞেস করো</button>
+  <button onclick="changeText()">টেক্সট পরিবর্তন</button>
+  <button onclick="changeImage()">ছবি পরিবর্তন</button>
+  <button onclick="showHidden()">লুকানো লেখা দেখাও</button>
+  <button onclick="fadeText()">ফেইড ইন/আউট</button>
+
+  <p id="hiddenText" style="display:none;">এটা আগে লুকানো ছিল!</p>
+  <p id="fadeText">এই টেক্সট ফেইড হবে।</p>
+  <img id="myImg" src="https://via.placeholder.com/150">
+
+  <div id="clock"></div>
+  <div id="date"></div>
+  <div id="quranAyah"></div>
+
+  <div class="slider">
+    <img class="slide" src="https://via.placeholder.com/300x150?text=Slide1">
+    <img class="slide" src="https://via.placeholder.com/300x150?text=Slide2">
+    <img class="slide" src="https://via.placeholder.com/300x150?text=Slide3">
+  </div>
+
+  <form name="loginForm" onsubmit="return validateForm()">
+    <input type="text" name="username" placeholder="ইউজারনেম">
+    <input type="password" name="password" placeholder="পাসওয়ার্ড">
+    <button type="submit">লগইন</button>
+  </form>
+
+  <script src="script.js"></script>
+</body>
+
     <nav>
         <a href="#"><i class="fas fa-music"></i> ইসলামিক নাশিদ</a>
         <a href="#"><i class="fas fa-book-quran"></i> তাফসির আল কুরআন</a>
