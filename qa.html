@@ -1,59 +1,52 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-    <meta charset="UTF-8">
-    <title>প্রশ্নোত্তর - IslamicWorldBD</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-        body { font-family:'Segoe UI', sans-serif; background:#f5f6fa; padding:20px;}
-        h1 { color:#198754; }
-        .qa { background:#fff; padding:15px; margin-bottom:10px; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.1);}
-        nav a { margin-right:10px; color:#198754; text-decoration:none; font-weight:bold;}
-    </style>
-    <!-- Firebase -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
-    <script>
-        const firebaseConfig = {
-          apiKey: "AIzaSyDZU9TtNXcpWW_jp366Kf2eWaN8QjigVeU",
-          authDomain: "islamicworldskm.firebaseapp.com",
-          projectId: "islamicworldskm",
-          storageBucket: "islamicworldskm.firebasestorage.app",
-          messagingSenderId: "703538391992",
-          appId: "1:703538391992:web:9a36ea8c6f190fb3be3d4d"
-        };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
-    </script>
+  <meta charset="UTF-8">
+  <title>প্রশ্ন করুন</title>
 </head>
 <body>
-    <nav>
-        <a href="index.html">হোম</a>
-        <a href="admin.html">এডমিন</a>
-    </nav>
+  <h2>আপনার প্রশ্ন লিখুন</h2>
+  <form id="questionForm">
+    <input type="text" id="name" placeholder="আপনার নাম" required><br><br>
+    <textarea id="question" placeholder="প্রশ্ন লিখুন" required></textarea><br><br>
+    <button type="submit">জমা দিন</button>
+  </form>
 
-    <h1>প্রশ্নোত্তর</h1>
-    <div id="qaContainer"></div>
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"></script>
 
-    <script>
-        const container = document.getElementById("qaContainer");
+  <script>
+    // ✅ Firebase Config
+    const firebaseConfig = {
+      apiKey: "AIzaSyDZU9TtNXcpWW_jp366Kf2eWaN8QjigVeU",
+      authDomain: "islamicworldskm.firebaseapp.com",
+      projectId: "islamicworldskm",
+      storageBucket: "islamicworldskm.firebasestorage.app",
+      messagingSenderId: "703538391992",
+      appId: "1:703538391992:web:9a36ea8c6f190fb3be3d4d"
+    };
 
-        // প্রশ্ন+উত্তর দেখানো
-        db.ref('questions').on('value', (snapshot) => {
-            container.innerHTML = "";
-            const data = snapshot.val();
-            if(data){
-                Object.keys(data).forEach(key => {
-                    const q = data[key];
-                    const div = document.createElement("div");
-                    div.className = "qa";
-                    div.innerHTML = `<b>প্রশ্ন:</b> ${q.text} <br> <b>উত্তর:</b> ${q.answer || 'এখনো উত্তর নেই।'}`;
-                    container.appendChild(div);
-                });
-            } else {
-                container.innerHTML = "<p>কোনো প্রশ্ন নেই।</p>";
-            }
-        });
-    </script>
+    // ✅ Initialize Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // ✅ প্রশ্ন জমা দেওয়া
+    document.getElementById("questionForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const name = document.getElementById("name").value;
+      const question = document.getElementById("question").value;
+
+      await db.collection("questions").add({
+        name: name,
+        question: question,
+        answer: "",
+        time: new Date()
+      });
+
+      alert("আপনার প্রশ্ন জমা হয়েছে!");
+      document.getElementById("questionForm").reset();
+    });
+  </script>
 </body>
 </html>
