@@ -4,131 +4,54 @@
     <meta charset="UTF-8">
     <title>IslamicWorldBD Team Portal</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Font Awesome CDN for icons -->
+    <!-- Font Awesome CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background: #f5f6fa;
-            margin: 0;
-            padding: 0;
-        }
-        header {
-            background: #198754;
-            color: #fff;
-            padding: 30px 0 10px 0;
-            text-align: center;
-        }
-        nav {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            background: #fff;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.08);
-        }
-        nav a {
-            color: #198754;
-            text-decoration: none;
-            padding: 18px 25px;
-            font-size: 18px;
-            display: flex;
-            align-items: center;
-            transition: background 0.2s, color 0.2s;
-            border-radius: 8px;
-            margin: 8px;
-        }
-        nav a i {
-            margin-right: 8px;
-            font-size: 22px;
-        }
-        nav a:hover {
-            background: #198754;
-            color: #fff;
-        }
-        .gallery {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 18px;
-            margin: 32px 0;
-        }
-        .gallery img {
-            width: 220px;
-            height: 140px;
-            object-fit: cover;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.09);
-            border: 1px solid #e2e2e2;
-        }
-        .about, .contact {
-            max-width: 640px;
-            margin: 32px auto;
-            background: #fff;
-            border-radius: 14px;
-            padding: 30px;
-            box-shadow: 0 3px 16px rgba(0,0,0,0.10);
-        }
-        .about h2, .contact h2 {
-            color: #198754;
-        }
-
-        /* নতুন বাটনের স্টাইল */
-        .actions {
-            text-align: center;
-            margin: 30px 0;
-        }
-        .actions button {
-            margin: 8px;
-            padding: 10px 20px;
-            border: none;
-            background: #198754;
-            color: #fff;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        .actions button:hover {
-            background: #146c43;
-        }
-    </style>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-        <h1 id="title"><i class="fas fa-moon"></i> IslamicWorldBD Team Portal</h1>
-        <p id="time">ইসলামিক মাল্টিমিডিয়া ও শিক্ষার জগতে স্বাগতম!</p>
-    </header>
-<body>
-  <h1 id="change">আমার ওয়েবসাইট</h1>
-  <button onclick="showMessage()">মেসেজ দেখাও</button>
-  <button onclick="askName()">ইউজারের নাম জিজ্ঞেস করো</button>
-  <button onclick="changeText()">টেক্সট পরিবর্তন</button>
-  <button onclick="changeImage()">ছবি পরিবর্তন</button>
-  <button onclick="showHidden()">লুকানো লেখা দেখাও</button>
-  <button onclick="fadeText()">ফেইড ইন/আউট</button>
 
-  <p id="hiddenText" style="display:none;">এটা আগে লুকানো ছিল!</p>
-  <p id="fadeText">এই টেক্সট ফেইড হবে।</p>
-  <img id="myImg" src="https://via.placeholder.com/150">
+<header>
+    <h1 id="title"><i class="fas fa-moon"></i> IslamicWorldBD Team Portal</h1>
+    <p id="time">ইসলামিক মাল্টিমিডিয়া ও শিক্ষার জগতে স্বাগতম!</p>
+</header>
 
-  <div id="clock"></div>
-  <div id="date"></div>
-  <div id="quranAyah"></div>
+<main>
+    <h1 id="change">আমার ওয়েবসাইট</h1>
+    <img id="myImg" src="https://via.placeholder.com/150" alt="Demo Image">
+    <p id="hiddenText" style="display:none;">এটা আগে লুকানো ছিল!</p>
+    <p id="fadeText">এই টেক্সট ফেইড হবে।</p>
+    <div id="clock"></div>
+    <div id="date"></div>
+    <div id="quranAyah"></div>
 
-  <div class="slider">
-    <img class="slide" src="https://via.placeholder.com/300x150?text=Slide1">
-    <img class="slide" src="https://via.placeholder.com/300x150?text=Slide2">
-    <img class="slide" src="https://via.placeholder.com/300x150?text=Slide3">
-  </div>
+    <!-- Interactive Buttons -->
+    <div class="actions">
+        <button onclick="showMessage()">মেসেজ দেখাও</button>
+        <button onclick="askName()">ইউজারের নাম জিজ্ঞেস করো</button>
+        <button onclick="changeText()">টেক্সট পরিবর্তন</button>
+        <button onclick="changeImage()">ছবি পরিবর্তন</button>
+        <button onclick="showHidden()">লুকানো লেখা দেখাও</button>
+        <button onclick="fadeText()">ফেইড ইন/আউট</button>
+        <button onclick="changeColor()">শিরোনামের রং পরিবর্তন করুন</button>
+        <button onclick="showTime()">বর্তমান সময় দেখুন</button>
+    </div>
 
-  <form name="loginForm" onsubmit="return validateForm()">
-    <input type="text" name="username" placeholder="ইউজারনেম">
-    <input type="password" name="password" placeholder="পাসওয়ার্ড">
-    <button type="submit">লগইন</button>
-  </form>
+    <!-- Image Slider -->
+    <div class="slider">
+        <img class="slide" src="https://via.placeholder.com/300x150?text=Slide1">
+        <img class="slide" src="https://via.placeholder.com/300x150?text=Slide2">
+        <img class="slide" src="https://via.placeholder.com/300x150?text=Slide3">
+    </div>
 
-  <script src="script.js"></script>
-</body>
+    <!-- Login Form -->
+    <form name="loginForm" onsubmit="return validateForm()">
+        <input type="text" name="username" placeholder="ইউজারনেম">
+        <input type="password" name="password" placeholder="পাসওয়ার্ড">
+        <button type="submit">লগইন</button>
+    </form>
 
+    <!-- Navigation -->
     <nav>
         <a href="#"><i class="fas fa-music"></i> ইসলামিক নাশিদ</a>
         <a href="#"><i class="fas fa-book-quran"></i> তাফসির আল কুরআন</a>
@@ -141,6 +64,7 @@
         <a href="#contact"><i class="fas fa-envelope"></i> যোগাযোগ</a>
     </nav>
 
+    <!-- Gallery -->
     <section class="gallery">
         <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=500&q=80" alt="Islamic Image 1">
         <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=500&q=80" alt="Islamic Image 2">
@@ -148,12 +72,7 @@
         <img src="https://images.unsplash.com/photo-1447958374760-1ce70cf11ee3?auto=format&fit=crop&w=500&q=80" alt="Islamic Image 4">
     </section>
 
-    <!-- নতুন বাটন সেকশন -->
-    <div class="actions">
-        <button onclick="changeColor()">শিরোনামের রং পরিবর্তন করুন</button>
-        <button onclick="showTime()">বর্তমান সময় দেখুন</button>
-    </div>
-
+    <!-- About -->
     <section class="about" id="about">
         <h2><i class="fas fa-users"></i> আমাদের সম্পর্কে</h2>
         <p>
@@ -163,6 +82,7 @@
         </p>
     </section>
 
+    <!-- Contact -->
     <section class="contact" id="contact">
         <h2><i class="fas fa-envelope"></i> যোগাযোগ করুন</h2>
         <p>
@@ -180,7 +100,9 @@
         </form>
     </section>
 
-    <!-- JavaScript ফাইল লিংক -->
-    <script src="script.js"></script>
+</main>
+
+<!-- JS -->
+<script src="script.js"></script>
 </body>
 </html>
