@@ -1,59 +1,74 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Panel - Answer Questions</title>
+    <meta charset="UTF-8">
+    <title>Admin Panel - Q&A</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background:#f5f6fa; padding:20px;}
+        h1 { color:#198754; }
+        .question { background:#fff; padding:15px; margin-bottom:10px; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.1);}
+        .question input { width:70%; padding:8px; margin-right:10px; border-radius:6px; border:1px solid #ccc; }
+        .question button { padding:8px 12px; background:#198754; color:#fff; border:none; border-radius:6px; cursor:pointer; }
+        nav a { margin-right:10px; color:#198754; text-decoration:none; font-weight:bold;}
+    </style>
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+    <script>
+        const firebaseConfig = {
+          apiKey: "AIzaSyDZU9TtNXcpWW_jp366Kf2eWaN8QjigVeU",
+          authDomain: "islamicworldskm.firebaseapp.com",
+          projectId: "islamicworldskm",
+          storageBucket: "islamicworldskm.firebasestorage.app",
+          messagingSenderId: "703538391992",
+          appId: "1:703538391992:web:9a36ea8c6f190fb3be3d4d"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+    </script>
 </head>
 <body>
-  <h2>Admin Panel</h2>
-  <div id="questions"></div>
+    <nav>
+        <a href="index.html">হোম</a>
+        <a href="qa.html">প্রশ্নোত্তর</a>
+    </nav>
 
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js"></script>
-  <script>
-    const firebaseConfig = {
-      apiKey: "YOUR_API_KEY",
-      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-      databaseURL: "https://YOUR_PROJECT_ID.firebaseio.com",
-      projectId: "YOUR_PROJECT_ID",
-      storageBucket: "YOUR_PROJECT_ID.appspot.com",
-      messagingSenderId: "YOUR_SENDER_ID",
-      appId: "YOUR_APP_ID"
-    };
+    <h1>Admin Panel</h1>
+    <div id="questionsContainer"></div>
 
-    const app = firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
+    <script>
+        const container = document.getElementById("questionsContainer");
 
-    const questionsDiv = document.getElementById('questions');
+        // প্রশ্ন ফেচ করা
+        db.ref('questions').on('value', (snapshot) => {
+            container.innerHTML = ""; // আগের লিস্ট পরিষ্কার
+            const data = snapshot.val();
+            if(data){
+                Object.keys(data).forEach(key => {
+                    const q = data[key];
+                    const div = document.createElement("div");
+                    div.className = "question";
+                    div.innerHTML = `
+                        <b>প্রশ্ন:</b> ${q.text} <br>
+                        <input type="text" placeholder="উত্তর লিখুন" id="answer-${key}" value="${q.answer || ''}">
+                        <button onclick="saveAnswer('${key}')">Save Answer</button>
+                    `;
+                    container.appendChild(div);
+                });
+            } else {
+                container.innerHTML = "<p>কোনো প্রশ্ন নেই।</p>";
+            }
+        });
 
-    // সব প্রশ্ন দেখাও
-    db.ref('questions').on('value', (snapshot) => {
-      questionsDiv.innerHTML = "";
-      snapshot.forEach((child) => {
-        const data = child.val();
-        const id = child.key;
-
-        let div = document.createElement("div");
-        div.innerHTML = `
-          <p><b>${data.name}</b>: ${data.question}</p>
-          <input type="text" id="answer-${id}" placeholder="Write answer..." value="${data.answer || ''}" />
-          <button onclick="saveAnswer('${id}')">Save Answer</button>
-          <hr>
-        `;
-        questionsDiv.appendChild(div);
-      });
-    });
-
-    // উত্তর সেভ করো
-    function saveAnswer(id) {
-      const answer = document.getElementById(`answer-${id}`).value;
-      db.ref('questions/' + id).update({
-        answer: answer
-      });
-      alert("Answer Saved!");
-    }
-  </script>
+        // উত্তর সেভ করা
+        function saveAnswer(key){
+            const answerInput = document.getElementById("answer-"+key);
+            db.ref('questions/'+key).update({
+                answer: answerInput.value
+            });
+            alert("উত্তর সেভ হয়েছে!");
+        }
+    </script>
 </body>
 </html>
