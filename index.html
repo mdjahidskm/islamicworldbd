@@ -71,12 +71,31 @@
         .about h2, .contact h2 {
             color: #198754;
         }
+
+        /* নতুন বাটনের স্টাইল */
+        .actions {
+            text-align: center;
+            margin: 30px 0;
+        }
+        .actions button {
+            margin: 8px;
+            padding: 10px 20px;
+            border: none;
+            background: #198754;
+            color: #fff;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .actions button:hover {
+            background: #146c43;
+        }
     </style>
 </head>
 <body>
     <header>
-        <h1><i class="fas fa-moon"></i> IslamicWorldBD Team Portal</h1>
-        <p>ইসলামিক মাল্টিমিডিয়া ও শিক্ষার জগতে স্বাগতম!</p>
+        <h1 id="title"><i class="fas fa-moon"></i> IslamicWorldBD Team Portal</h1>
+        <p id="time">ইসলামিক মাল্টিমিডিয়া ও শিক্ষার জগতে স্বাগতম!</p>
     </header>
     <nav>
         <a href="#"><i class="fas fa-music"></i> ইসলামিক নাশিদ</a>
@@ -91,12 +110,17 @@
     </nav>
 
     <section class="gallery">
-        <!-- Demo Islamic Images (replace with your own links if needed) -->
         <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=500&q=80" alt="Islamic Image 1">
         <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=500&q=80" alt="Islamic Image 2">
         <img src="https://images.unsplash.com/photo-1505685296765-3a2736de412f?auto=format&fit=crop&w=500&q=80" alt="Islamic Image 3">
         <img src="https://images.unsplash.com/photo-1447958374760-1ce70cf11ee3?auto=format&fit=crop&w=500&q=80" alt="Islamic Image 4">
     </section>
+
+    <!-- নতুন বাটন সেকশন -->
+    <div class="actions">
+        <button onclick="changeColor()">শিরোনামের রং পরিবর্তন করুন</button>
+        <button onclick="showTime()">বর্তমান সময় দেখুন</button>
+    </div>
 
     <section class="about" id="about">
         <h2><i class="fas fa-users"></i> আমাদের সম্পর্কে</h2>
@@ -114,7 +138,6 @@
             <b>ইমেইল:</b> contact@islamicworldbd.com<br>
             <b>ফোন:</b> +880-1XXXXXXXXX
         </p>
-        <!-- Simple contact form (demo purpose) -->
         <form>
             <input type="text" placeholder="আপনার নাম" style="width:48%;padding:8px;margin-bottom:9px;">
             <input type="email" placeholder="ইমেইল" style="width:48%;padding:8px;margin-bottom:9px;">
@@ -124,5 +147,8 @@
             <button type="submit" style="padding:10px 25px; background:#198754;color:#fff;border:none;border-radius:8px; cursor:pointer;">পাঠান</button>
         </form>
     </section>
+
+    <!-- JavaScript ফাইল লিংক -->
+    <script src="script.js"></script>
 </body>
 </html>
