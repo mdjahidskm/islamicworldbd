@@ -6,62 +6,18 @@
   <title>এডমিন প্যানেল</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background:#f9f9f9;
-      margin:0;
-      padding:0;
-    }
-    header {
-      background:#198754;
-      color:#fff;
-      padding:15px;
-      text-align:center;
-    }
+    body {font-family: Arial,sans-serif; background:#f9f9f9; margin:0; padding:0;}
+    header {background:#198754; color:#fff; padding:15px; text-align:center;}
     header h1 {margin:0;}
-    nav {
-      display:flex;
-      justify-content:center;
-      padding:10px;
-      background:#145c3e;
-    }
-    nav a {
-      color:#fff;
-      text-decoration:none;
-      padding:8px 15px;
-      margin:0 5px;
-      border-radius:5px;
-      background:#198754;
-    }
+    nav {display:flex; justify-content:center; padding:10px; background:#145c3e;}
+    nav a {color:#fff; text-decoration:none; padding:8px 15px; margin:0 5px; border-radius:5px; background:#198754;}
     nav a:hover {background:#10724a;}
-    #questions {
-      max-width:800px;
-      margin:20px auto;
-    }
-    .question-card {
-      background:#fff;
-      border-radius:8px;
-      box-shadow:0 2px 5px rgba(0,0,0,0.1);
-      padding:15px;
-      margin:10px 0;
-    }
+    #login-section {text-align:center; margin-top:20px;}
+    #questions {max-width:800px; margin:20px auto;}
+    .question-card {background:#fff; border-radius:8px; box-shadow:0 2px 5px rgba(0,0,0,0.1); padding:15px; margin:10px;}
     .question-card b {color:#198754;}
-    textarea {
-      width:100%;
-      padding:8px;
-      margin:8px 0;
-      border-radius:5px;
-      border:1px solid #ccc;
-      resize:none;
-    }
-    button.save-btn {
-      padding:8px 15px;
-      background:#198754;
-      color:#fff;
-      border:none;
-      border-radius:5px;
-      cursor:pointer;
-    }
+    textarea {width:100%; padding:8px; margin:8px 0; border-radius:5px; border:1px solid #ccc; resize:none;}
+    button.save-btn {padding:8px 15px; background:#198754; color:#fff; border:none; border-radius:5px; cursor:pointer;}
     button.save-btn:hover {background:#10724a;}
   </style>
 </head>
@@ -75,7 +31,7 @@
   <a href="index.html"><i class="fas fa-home"></i> হোমে ফিরে যান</a>
 </nav>
 
-<div id="login-section" style="text-align:center; margin-top:20px;">
+<div id="login-section">
   <button id="loginBtn" style="padding:10px 20px; background:#198754; color:#fff; border:none; border-radius:5px; cursor:pointer;">
     গুগল লগইন
   </button>
@@ -83,9 +39,11 @@
 
 <div id="questions"></div>
 
+<!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"></script>
+
 <script>
   // Firebase config
   const firebaseConfig = {
@@ -103,7 +61,6 @@
   const auth = firebase.auth();
 
   const adminEmail = "mdjahidskm@gmail.com";
-
   const loginBtn = document.getElementById("loginBtn");
   const loginSection = document.getElementById("login-section");
   const questionsDiv = document.getElementById("questions");
@@ -123,10 +80,10 @@
     }
   });
 
-  function loadQuestions() {
-    db.collection("questions").orderBy("timestamp","desc").onSnapshot(snapshot => {
+  function loadQuestions(){
+    db.collection("questions").orderBy("timestamp","desc").onSnapshot(snapshot=>{
       questionsDiv.innerHTML = "";
-      snapshot.forEach(doc => {
+      snapshot.forEach(doc=>{
         const q = doc.data();
         questionsDiv.innerHTML += `
           <div class="question-card">
@@ -144,11 +101,11 @@
   async function saveAnswer(id){
     const answerText = document.getElementById("answer-" + id).value;
     try {
-      await db.collection("questions").doc(id).update({ answer: answerText });
+      await db.collection("questions").doc(id).update({answer:answerText});
       alert("✅ উত্তর সংরক্ষণ করা হয়েছে");
-    } catch(err) {
+    } catch(err){
       console.error(err);
-      alert("উত্তর সংরক্ষণ করতে সমস্যা হয়েছে!");
+      alert("❌ উত্তর সংরক্ষণ করতে সমস্যা হয়েছে!");
     }
   }
 </script>
