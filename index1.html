@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IslamicWorldBD</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {font-family: Arial, sans-serif; margin:0; padding:0; background:#f9f9f9;}
+    header {background:#198754; color:#fff; padding:20px; text-align:center;}
+    header h1 {margin:0;}
+    nav {display:flex; flex-wrap:wrap; justify-content:center; background:#145c3e;}
+    nav a {color:#fff; text-decoration:none; padding:10px 15px; display:flex; align-items:center; gap:5px;}
+    nav a:hover {background:#10724a;}
+    .section {padding:20px;}
+    .qa-form input, .qa-form textarea {width:100%; padding:8px; margin:5px 0; border-radius:5px; border:1px solid #ccc;}
+    .qa-form button {padding:10px 20px; background:#198754; color:#fff; border:none; border-radius:5px; cursor:pointer;}
+    .question-card {background:#fff; border-radius:8px; box-shadow:0 2px 5px rgba(0,0,0,0.1); padding:15px; margin:10px 0;}
+    .question-card b {color:#198754;}
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>IslamicWorldBD</h1>
+</header>
+
+<nav>
+  <a href="index1.html"><i class="fas fa-home"></i> হোম</a>
+  <a href="qa.html"><i class="fas fa-question-circle"></i> প্রশ্নোত্তর</a>
+  <a href="admin.html"><i class="fas fa-user-shield"></i> অ্যাডমিন</a>
+</nav>
+
+<section class="section">
+  <h2>প্রশ্ন করুন</h2>
+  <form id="qa-form" class="qa-form">
+    <input type="text" id="name" placeholder="আপনার নাম লিখুন..." required>
+    <textarea id="question" placeholder="আপনার প্রশ্ন লিখুন..." required></textarea>
+    <button type="submit">প্রশ্ন পাঠান</button>
+  </form>
+</section>
+
+<section class="section">
+  <h2>সাম্প্রতিক প্রশ্ন</h2>
+  <div id="questions"></div>
+</section>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"></script>
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyDZU9TtNXcpWW_jp366Kf2eWaN8QjigVeU",
+    authDomain: "islamicworldskm.firebaseapp.com",
+    projectId: "islamicworldskm",
+    storageBucket: "islamicworldskm.firebasestorage.app",
+    messagingSenderId: "703538391992",
+    appId: "1:703538391992:web:9a36ea8c6f190fb3be3d4d"
+  };
+
+  const app = firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  // Form submission
+  const qaForm = document.getElementById("qa-form");
+  qaForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const name = document.getElementById("name").value.trim();
+    const question = document.getElementById("question").value.trim();
+    if(!name || !question){ alert("নাম ও প্রশ্ন লিখুন!"); return; }
+
+    try {
+      await db.collection("questions").add({
+        name: name,
+        questionText: question,
+        timestamp: new Date(),
+        answer: ""
+      });
+      alert("প্রশ্ন সফলভাবে জমা হয়েছে!");
+      qaForm.reset();
+    } catch(err){
+      console.error(err);
+      alert("প্রশ্ন জমা দিতে সমস্যা হয়েছে!");
+    }
+  });
+
+  // Display questions
+  const questionsDiv = document.getElementById("questions");
+  db.collection("questions").orderBy("timestamp", "desc").onSnapshot(snapshot => {
+    questionsDiv.innerHTML = "";
+    snapshot.forEach(doc => {
+      const q = doc.data();
+      questionsDiv.innerHTML += `
+        <div class="question-card">
+          <b>${q.name}</b> জিজ্ঞেস করেছেন:<br>
+          ${q.questionText}<br><br>
+          <b>উত্তর:</b> ${q.answer ? q.answer : "এখনো কোনো উত্তর নেই"}
+        </div>
+      `;
+    });
+  });
+</script>
+
+</body>
+</html>
