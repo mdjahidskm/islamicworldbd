@@ -1,82 +1,62 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-<meta charset="UTF-8">
-<title>প্রশ্নোত্তর</title>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"></script>
-<style>
-    body { font-family: Arial, sans-serif; padding: 20px; background: #f9f9f9; }
-    input, textarea { width: 100%; padding: 8px; margin: 6px 0; border-radius: 6px; border: 1px solid #ccc; }
-    button { padding: 8px 20px; background: #198754; color: #fff; border: none; border-radius: 6px; cursor: pointer; }
-    button:hover { background: #146c43; }
-    .question { background: #fff; padding: 10px; margin: 8px 0; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-    .answer { color: green; font-weight: bold; margin-top: 5px; }
-    h2 { color: #198754; }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>প্রশ্নোত্তর</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {font-family: Arial, sans-serif; background:#f9f9f9; margin:0; padding:0;}
+    header {background:#198754; color:#fff; padding:15px; text-align:center;}
+    header h1 {margin:0;}
+    .question-card {background:#fff; border-radius:8px; box-shadow:0 2px 5px rgba(0,0,0,0.1); padding:15px; margin:10px;}
+    .question-card b {color:#198754;}
+    nav {display:flex; flex-wrap:wrap; justify-content:center; background:#145c3e;}
+    nav a {color:#fff; text-decoration:none; padding:10px 15px; display:flex; align-items:center; gap:5px;}
+    nav a:hover {background:#10724a;}
+  </style>
 </head>
 <body>
 
-<h2>প্রশ্ন করুন</h2>
-<input type="text" id="userName" placeholder="আপনার নাম">
-<textarea id="userQuestion" placeholder="আপনার প্রশ্ন লিখুন"></textarea>
-<button type="button" onclick="submitQuestion()">জমা দিন</button>
+<header>
+  <h1>প্রশ্নোত্তর</h1>
+</header>
 
-<h2>প্রশ্ন ও উত্তর</h2>
-<div id="questionsList"></div>
+<nav>
+  <a href="index.html"><i class="fas fa-home"></i> হোম</a>
+  <a href="qa.html"><i class="fas fa-question-circle"></i> প্রশ্নোত্তর</a>
+</nav>
 
+<div id="questions"></div>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"></script>
 <script>
-  // Firebase config
   const firebaseConfig = {
     apiKey: "AIzaSyDZU9TtNXcpWW_jp366Kf2eWaN8QjigVeU",
     authDomain: "islamicworldskm.firebaseapp.com",
     projectId: "islamicworldskm",
-    storageBucket: "islamicworldskm.appspot.com",
+    storageBucket: "islamicworldskm.firebasestorage.app",
     messagingSenderId: "703538391992",
     appId: "1:703538391992:web:9a36ea8c6f190fb3be3d4d"
   };
 
-  // Initialize Firebase
   const app = firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
-  const questionsRef = db.collection("questions");
 
-  // প্রশ্ন জমা দেওয়া
-  function submitQuestion() {
-    const name = document.getElementById("userName").value.trim();
-    const question = document.getElementById("userQuestion").value.trim();
+  const questionsDiv = document.getElementById("questions");
 
-    if(!name || !question) { 
-      alert("সব ঘর পূরণ করুন!");
-      return; 
-    }
-
-    questionsRef.add({
-      name: name,
-      questionText: question,
-      answer: "", // খালি answer
-      timestamp: firebase.firestore.FieldValue.serverTimestamp()
-    }).then(() => {
-      alert("আপনার প্রশ্ন সফলভাবে জমা হয়েছে!");
-      document.getElementById("userName").value = "";
-      document.getElementById("userQuestion").value = "";
-    }).catch(err => {
-      console.error("Error adding question: ", err);
-      alert("দুঃখিত, প্রশ্ন জমা দেওয়া যায়নি। আবার চেষ্টা করুন।");
-    });
-  }
-
-  // সব প্রশ্ন দেখানো (Live updates)
-  questionsRef.orderBy("timestamp","desc").onSnapshot(snapshot => {
-    const list = document.getElementById("questionsList");
-    list.innerHTML = "";
+  db.collection("questions").orderBy("timestamp", "desc").onSnapshot(snapshot => {
+    questionsDiv.innerHTML = "";
     snapshot.forEach(doc => {
-      const data = doc.data();
-      const div = document.createElement("div");
-      div.className = "question";
-      div.innerHTML = `<b>${data.name}</b>: ${data.questionText}<br>
-                       <span class="answer">${data.answer ? "উত্তর: "+data.answer : "উত্তর এখনও দেওয়া হয়নি"}</span>`;
-      list.appendChild(div);
+      const q = doc.data();
+      questionsDiv.innerHTML += `
+        <div class="question-card">
+          <b>${q.name}</b> জিজ্ঞেস করেছেন:<br>
+          ${q.questionText}<br><br>
+          <b>উত্তর:</b> ${q.answer ? q.answer : "এখনো কোনো উত্তর নেই"}
+        </div>
+      `;
     });
   });
 </script>
