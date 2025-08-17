@@ -1,68 +1,90 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-<meta charset="UTF-8">
-<title>Admin Panel</title>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"></script>
-<style>
-    body { font-family: Arial, sans-serif; padding: 20px; background: #f0f0f0; }
-    .question { background: #fff; padding: 15px; margin: 10px 0; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-    input { width: 80%; padding: 6px; margin: 6px 0; border-radius: 6px; border: 1px solid #ccc; }
-    button { padding: 6px 12px; background: #198754; color: #fff; border: none; border-radius: 6px; cursor: pointer; }
-    button:hover { background: #146c43; }
-    h2 { color: #198754; }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>এডমিন প্যানেল</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {font-family: Arial, sans-serif; background:#f9f9f9; margin:0; padding:0;}
+    header {background:#198754; color:#fff; padding:15px; text-align:center;}
+    header h1 {margin:0;}
+    nav {display:flex; flex-wrap:wrap; justify-content:center; background:#145c3e;}
+    nav a {color:#fff; text-decoration:none; padding:10px 15px; display:flex; align-items:center; gap:5px;}
+    nav a:hover {background:#10724a;}
+    .question-card {background:#fff; border-radius:8px; box-shadow:0 2px 5px rgba(0,0,0,0.1); padding:15px; margin:10px;}
+    textarea {width:100%; padding:8px; margin-top:5px; border-radius:5px; border:1px solid #ccc;}
+    button.saveBtn {margin-top:5px; padding:8px 15px; background:#198754; color:#fff; border:none; border-radius:5px; cursor:pointer;}
+  </style>
 </head>
 <body>
 
-<h2>Admin Panel – প্রশ্নের উত্তর দিন</h2>
-<div id="questionsList"></div>
+<header>
+  <h1>এডমিন প্যানেল</h1>
+</header>
 
+<nav>
+  <a href="index.html"><i class="fas fa-home"></i> হোম</a>
+  <a href="admin.html"><i class="fas fa-user-shield"></i> অ্যাডমিন</a>
+</nav>
+
+<button id="loginBtn">গুগল লগইন</button>
+<div id="questions"></div>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"></script>
 <script>
-  // Firebase config
   const firebaseConfig = {
     apiKey: "AIzaSyDZU9TtNXcpWW_jp366Kf2eWaN8QjigVeU",
     authDomain: "islamicworldskm.firebaseapp.com",
     projectId: "islamicworldskm",
-    storageBucket: "islamicworldskm.appspot.com",
+    storageBucket: "islamicworldskm.firebasestorage.app",
     messagingSenderId: "703538391992",
     appId: "1:703538391992:web:9a36ea8c6f190fb3be3d4d"
   };
 
-  // Initialize Firebase
   const app = firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
-  const questionsRef = db.collection("questions");
+  const auth = firebase.auth();
 
-  // সব প্রশ্ন দেখানো (Live update)
-  questionsRef.orderBy("timestamp","desc").onSnapshot(snapshot => {
-    const list = document.getElementById("questionsList");
-    list.innerHTML = "";
-    snapshot.forEach(doc => {
-      const data = doc.data();
-      const div = document.createElement("div");
-      div.className = "question";
-      div.innerHTML = `
-        <b>${data.name}</b>: ${data.questionText}<br>
-        <input type="text" placeholder="উত্তর লিখুন" id="answer-${doc.id}" value="${data.answer || ''}">
-        <button onclick="submitAnswer('${doc.id}')">উত্তর সংরক্ষণ করুন</button>
-        <p><small>${data.answer ? "বর্তমান উত্তর: "+data.answer : "উত্তর এখনও দেওয়া হয়নি"}</small></p>
-      `;
-      list.appendChild(div);
-    });
+  const adminEmail = "mdjahidskm@gmail.com";
+
+  document.getElementById("loginBtn").addEventListener("click", () => {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    auth.signInWithPopup(provider);
   });
 
-  // উত্তর সংরক্ষণ করা
-  function submitAnswer(docId) {
-    const answerText = document.getElementById(`answer-${docId}`).value.trim();
-    if(!answerText) { alert("উত্তর লিখুন!"); return; }
-    questionsRef.doc(docId).update({ answer: answerText })
-      .then(() => alert("উত্তর সফলভাবে সংরক্ষিত হয়েছে!"))
-      .catch(err => {
-        console.error(err);
-        alert("উত্তর সংরক্ষণে সমস্যা হয়েছে, আবার চেষ্টা করুন।");
+  auth.onAuthStateChanged(user => {
+    if (user && user.email === adminEmail) {
+      loadQuestions();
+    } else if (user) {
+      alert("🚫 আপনি এডমিন নন!");
+      auth.signOut();
+    }
+  });
+
+  function loadQuestions() {
+    db.collection("questions").orderBy("timestamp", "desc").onSnapshot(snapshot => {
+      const questionsDiv = document.getElementById("questions");
+      questionsDiv.innerHTML = "";
+      snapshot.forEach(doc => {
+        const q = doc.data();
+        questionsDiv.innerHTML += `
+          <div class="question-card">
+            <b>${q.name}</b>: ${q.questionText} <br>
+            <textarea id="answer-${doc.id}" placeholder="উত্তর লিখুন">${q.answer || ""}</textarea><br>
+            <button class="saveBtn" onclick="saveAnswer('${doc.id}')">সংরক্ষণ করুন</button>
+          </div>
+        `;
       });
+    });
+  }
+
+  async function saveAnswer(id) {
+    const answerText = document.getElementById("answer-" + id).value;
+    await db.collection("questions").doc(id).update({ answer: answerText });
+    alert("✅ উত্তর সংরক্ষণ করা হয়েছে");
   }
 </script>
 
